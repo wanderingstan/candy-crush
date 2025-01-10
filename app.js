@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
   //drop candies once some have been cleared
   function moveIntoSquareBelow() {
     for (let i = 0; i < 55; i++) {
-      setTimeout(() => {
+      // setTimeout(() => {
         if (squares[i + width].style.backgroundImage === "") {
           squares[i + width].style.backgroundImage =
             squares[i].style.backgroundImage;
@@ -106,11 +106,11 @@ document.addEventListener("DOMContentLoaded", () => {
             squares[i + width].classList.remove("drop-in");
           }, 500);
 
-          squares[i].classList.add("drop-out");
+          // squares[i].classList.add("drop-out");
           squares[i].style.backgroundImage = "";
-          setTimeout(() => {
-            squares[i + width].classList.remove("drop-out");
-          }, 500);
+          // setTimeout(() => {
+          //   squares[i + width].classList.remove("drop-out");
+          // }, 500);
 
           const firstRow = [0, 1, 2, 3, 4, 5, 6, 7];
           const isFirstRow = firstRow.includes(i);
@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
             squares[i].classList.add("drop-in");
           }
         }
-      }, Math.floor(i / 8) * 250); // Delay for each chunk of 8 squares
+      // }, Math.floor(i / 8) * 250); // Delay for each chunk of 8 squares
     }
   }
 
