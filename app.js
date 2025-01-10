@@ -94,22 +94,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //drop candies once some have been cleared
   function moveIntoSquareBelow() {
-    for (i = 0; i < 55; i++) {
-      if (squares[i + width].style.backgroundImage === "") {
-        squares[i + width].style.backgroundImage =
-          squares[i].style.backgroundImage;
-        squares[i].style.backgroundImage = "";
-        const firstRow = [0, 1, 2, 3, 4, 5, 6, 7];
-        const isFirstRow = firstRow.includes(i);
-        if (isFirstRow && squares[i].style.backgroundImage === "") {
-          let randomColor = Math.floor(Math.random() * candyColors.length);
-          squares[i].style.backgroundImage = candyColors[randomColor];
+    for (let i = 0; i < 55; i++) {
+      setTimeout(() => {
+        if (squares[i + width].style.backgroundImage === "") {
+          squares[i + width].style.backgroundImage =
+            squares[i].style.backgroundImage;
+
+          squares[i + width].classList.add("drop-in");
+          // Remove the class after the animation is done to allow re-adding it later
+          setTimeout(() => {
+            squares[i + width].classList.remove("drop-in");
+          }, 500);
+
+          squares[i].classList.add("drop-out");
+          squares[i].style.backgroundImage = "";
+          setTimeout(() => {
+            squares[i + width].classList.remove("drop-out");
+          }, 500);
+
+          const firstRow = [0, 1, 2, 3, 4, 5, 6, 7];
+          const isFirstRow = firstRow.includes(i);
+          if (isFirstRow && squares[i].style.backgroundImage === "") {
+            let randomColor = Math.floor(Math.random() * candyColors.length);
+            squares[i].style.backgroundImage = candyColors[randomColor];
+            squares[i].classList.add("drop-in");
+          }
         }
-      }
+      }, i * 50); // 0.25 seconds delay for each iteration
     }
   }
 
-  ///Checking for Matches
+  //Checking for Matches
   //for row of Four
   function checkRowForFour() {
     for (i = 0; i < 60; i++) {
