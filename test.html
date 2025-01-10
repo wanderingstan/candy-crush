@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>Color Game</title>
+
+    <style>
+      html, body {
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          background: #000;
+      }
+
+      iframe {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          border: none;
+          zoom: 1;  /* Base zoom for 465px width */
+      }
+
+    </style>
+  </head>
+  <body>
+    <iframe id='gameFrame' title='Embedded content'></iframe>
+
+    <!-- Hidden divs for color variables -->
+    <div id='red-content' style='display:none'>https://res.cloudinary.com/dzkwltgyd/image/upload/v1736545813/glif-run-outputs/ez2qk6pqqzf6ndnjqkxs.jpg</div>
+    <div id='yellow-content' style='display:none'>https://res.cloudinary.com/dzkwltgyd/image/upload/v1736545817/glif-run-outputs/zcojy6ekup9vtfqgreom.jpg</div>
+    <div id='orange-content' style='display:none'>https://res.cloudinary.com/dzkwltgyd/image/upload/v1736545811/glif-run-outputs/xphoedrgpjezsqttfijf.jpg</div>
+    <div id='purple-content' style='display:none'>https://res.cloudinary.com/dzkwltgyd/image/upload/v1736545809/glif-run-outputs/fwh5x6qm8wkaxyntlpuz.jpg</div>
+    <div id='green-content' style='display:none'>https://res.cloudinary.com/dzkwltgyd/image/upload/v1736545815/glif-run-outputs/z05mgeklxea5wfeoxh7f.jpg</div>
+    <div id='blue-content' style='display:none'>https://res.cloudinary.com/dzkwltgyd/image/upload/v1736545829/glif-run-outputs/ubkymwec1ncnwibwbqjg.jpg</div>
+    <div id='background-content' style='display:none'>https://res.cloudinary.com/dzkwltgyd/image/upload/v1736545830/glif-run-outputs/jphex3jjplhyrhj6f2nr.jpg</div>
+
+    <script>
+      const variables = {
+          'red': document.getElementById('red-content').textContent,
+          'yellow': document.getElementById('yellow-content').textContent,
+          'orange': document.getElementById('orange-content').textContent,
+          'purple': document.getElementById('purple-content').textContent,
+          'green': document.getElementById('green-content').textContent,
+          'blue': document.getElementById('blue-content').textContent,
+          'background': document.getElementById('background-content').textContent,
+      };
+
+      function constructUrl() {
+        const baseUrl = 'https://wanderingstan.github.io/candy-crush/';
+        const url = new URL(baseUrl);
+        // Add each variable as a query parameter if it has a value
+        for (const [key, value] of Object.entries(variables)) {
+          if (value) {
+            url.searchParams.append(key, value);
+          }
+        }
+
+        return url.toString();
+      }
+
+      // Function to update the iframe URL
+      function updateIframe() {
+        const iframe = document.getElementById('gameFrame');
+        iframe.src = constructUrl();
+      }
+
+      // Function to set variables and update the iframe
+      function setVariable(name, value) {
+        variables[name] = value;
+        updateIframe();
+      }
+
+      // Initial setup
+      updateIframe();
+    </script>
+  </body>
+</html>
