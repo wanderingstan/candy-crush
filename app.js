@@ -5,14 +5,15 @@ const width = 8
 const squares = []
 let score = 0
 
+const urlParams = new URLSearchParams(window.location.search);
 const candyColors = [
-    'url(images/red-candy.png)',
-    'url(images/yellow-candy.png)',
-    'url(images/orange-candy.png)',
-    'url(images/purple-candy.png)',
-    'url(images/green-candy.png)',
-    'url(images/blue-candy.png)'
-  ]
+    `url(${urlParams.get('red') || 'images/red-candy.png'})`,
+    `url(${urlParams.get('yellow') || 'images/yellow-candy.png'})`,
+    `url(${urlParams.get('orange') || 'images/orange-candy.png'})`,
+    `url(${urlParams.get('purple') || 'images/purple-candy.png'})`,
+    `url(${urlParams.get('green') || 'images/green-candy.png'})`,
+    `url(${urlParams.get('blue') || 'images/blue-candy.png'})`
+];
 
 //create your board
 function createBoard() {
