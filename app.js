@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
             squares[i].classList.add("drop-in");
           }
         }
-      }, i * 50); // 0.25 seconds delay for each iteration
+      }, Math.floor(i / 8) * 250); // Delay for each chunk of 8 squares
     }
   }
 
