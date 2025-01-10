@@ -15,6 +15,12 @@ const candyColors = [
     `url(${urlParams.get('blue') || 'images/blue-candy.png'})`
 ];
 
+// Set background image of body if 'background' param is present
+const backgroundImage = urlParams.get('background');
+if (backgroundImage) {
+    document.body.style.backgroundImage = `url(${backgroundImage})`;
+}
+
 //create your board
 function createBoard() {
   for (let i = 0; i < width*width; i++) {
