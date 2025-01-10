@@ -100,11 +100,11 @@ document.addEventListener("DOMContentLoaded", () => {
           squares[i + width].style.backgroundImage =
             squares[i].style.backgroundImage;
 
-          squares[i + width].classList.add("drop-in");
+          // squares[i + width].classList.add("drop-in");
           // Remove the class after the animation is done to allow re-adding it later
-          setTimeout(() => {
-            squares[i + width].classList.remove("drop-in");
-          }, 500);
+          // setTimeout(() => {
+          //   squares[i + width].classList.remove("drop-in");
+          // }, 500);
 
           // squares[i].classList.add("drop-out");
           squares[i].style.backgroundImage = "";
@@ -122,6 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       // }, Math.floor(i / 8) * 250); // Delay for each chunk of 8 squares
     }
+    console.log("moveIntoSquareBelow");
   }
 
   //Checking for Matches
