@@ -41,12 +41,25 @@ document.addEventListener("DOMContentLoaded", () => {
   let squareIdBeingDragged;
   let squareIdBeingReplaced;
 
-  squares.forEach((square) => square.addEventListener("dragstart", dragStart));
-  squares.forEach((square) => square.addEventListener("dragend", dragEnd));
-  squares.forEach((square) => square.addEventListener("dragover", dragOver));
-  squares.forEach((square) => square.addEventListener("dragenter", dragEnter));
-  squares.forEach((square) => square.addEventListener("drageleave", dragLeave));
-  squares.forEach((square) => square.addEventListener("drop", dragDrop));
+  let dragTargetElement = null;
+
+  // squares.forEach((square) => square.addEventListener("dragstart", dragStart));
+  // squares.forEach((square) => square.addEventListener("dragend", dragEnd));
+  // squares.forEach((square) => square.addEventListener("dragover", dragOver));
+  // squares.forEach((square) => square.addEventListener("dragenter", dragEnter));
+  // squares.forEach((square) => square.addEventListener("drageleave", dragLeave));
+  // squares.forEach((square) => square.addEventListener("drop", dragDrop));
+
+  squares.forEach((square) => {
+    square.addEventListener("dragstart", dragStart);
+    square.addEventListener("dragend", dragEnd);
+    square.addEventListener("dragover", dragOver);
+    square.addEventListener("dragenter", (e) => {
+      e.preventDefault();
+      dragTargetElement = e.target; // Store the current target
+    });
+    square.addEventListener("dragleave", dragLeave);
+  });
 
   function dragStart() {
     colorBeingDragged = this.style.backgroundImage;
@@ -74,55 +87,63 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function dragEnd() {
-    //What is a valid move?
-    let validMoves = [
-      squareIdBeingDragged - 1,
-      squareIdBeingDragged - width,
-      squareIdBeingDragged + 1,
-      squareIdBeingDragged + width,
-    ];
-    let validMove = validMoves.includes(squareIdBeingReplaced);
+    if (dragTargetElement) {
+      // Implement the drop logic here instead
+      colorBeingReplaced = dragTargetElement.style.backgroundImage;
+      squareIdBeingReplaced = parseInt(dragTargetElement.id);
+      dragTargetElement.style.backgroundImage = colorBeingDragged;
+      squares[squareIdBeingDragged].style.backgroundImage = colorBeingReplaced;
 
-    if (squareIdBeingReplaced && validMove) {
-      squareIdBeingReplaced = null;
-    } else if (squareIdBeingReplaced && !validMove) {
-      squares[squareIdBeingReplaced].style.backgroundImage = colorBeingReplaced;
-      squares[squareIdBeingDragged].style.backgroundImage = colorBeingDragged;
-    } else
-      squares[squareIdBeingDragged].style.backgroundImage = colorBeingDragged;
+      // Validate the move
+      let validMoves = [
+        squareIdBeingDragged - 1,
+        squareIdBeingDragged - width,
+        squareIdBeingDragged + 1,
+        squareIdBeingDragged + width,
+      ];
+      let validMove = validMoves.includes(squareIdBeingReplaced);
+
+      if (!validMove) {
+        // Revert the move if invalid
+        dragTargetElement.style.backgroundImage = colorBeingReplaced;
+        squares[squareIdBeingDragged].style.backgroundImage = colorBeingDragged;
+      }
+    }
+
+    // Reset the target
+    dragTargetElement = null;
   }
 
   //drop candies once some have been cleared
   function moveIntoSquareBelow() {
     for (let i = 0; i < 55; i++) {
       // setTimeout(() => {
-        if (squares[i + width].style.backgroundImage === "") {
-          squares[i + width].style.backgroundImage =
-            squares[i].style.backgroundImage;
+      if (squares[i + width].style.backgroundImage === "") {
+        squares[i + width].style.backgroundImage =
+          squares[i].style.backgroundImage;
 
-          // squares[i + width].classList.add("drop-in");
-          // Remove the class after the animation is done to allow re-adding it later
-          // setTimeout(() => {
-          //   squares[i + width].classList.remove("drop-in");
-          // }, 500);
+        // squares[i + width].classList.add("drop-in");
+        // Remove the class after the animation is done to allow re-adding it later
+        // setTimeout(() => {
+        //   squares[i + width].classList.remove("drop-in");
+        // }, 500);
 
-          // squares[i].classList.add("drop-out");
-          squares[i].style.backgroundImage = "";
-          // setTimeout(() => {
-          //   squares[i + width].classList.remove("drop-out");
-          // }, 500);
+        // squares[i].classList.add("drop-out");
+        squares[i].style.backgroundImage = "";
+        // setTimeout(() => {
+        //   squares[i + width].classList.remove("drop-out");
+        // }, 500);
 
-          const firstRow = [0, 1, 2, 3, 4, 5, 6, 7];
-          const isFirstRow = firstRow.includes(i);
-          if (isFirstRow && squares[i].style.backgroundImage === "") {
-            let randomColor = Math.floor(Math.random() * candyColors.length);
-            squares[i].style.backgroundImage = candyColors[randomColor];
-            squares[i].classList.add("drop-in");
-          }
+        const firstRow = [0, 1, 2, 3, 4, 5, 6, 7];
+        const isFirstRow = firstRow.includes(i);
+        if (isFirstRow && squares[i].style.backgroundImage === "") {
+          let randomColor = Math.floor(Math.random() * candyColors.length);
+          squares[i].style.backgroundImage = candyColors[randomColor];
+          squares[i].classList.add("drop-in");
         }
+      }
       // }, Math.floor(i / 8) * 250); // Delay for each chunk of 8 squares
     }
-    console.log("moveIntoSquareBelow");
   }
 
   //Checking for Matches
